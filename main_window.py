@@ -4,6 +4,7 @@ import pandas as pd
 from PyQt5.QtWidgets import QMainWindow, QApplication, QFrame, QFileDialog
 from PyQt5.uic import loadUi
 import seaborn as sns
+import matplotlib.pyplot as plt
 
 
 class MainWindow(QMainWindow, QFrame):
@@ -18,8 +19,8 @@ class MainWindow(QMainWindow, QFrame):
 
     def zoomclick(self):
         img = cv2.imread(f"image/{self.activeText}.png")
-        cv2.imshow("Plot", img)
-        cv2.waitKey(0)
+        plt.imshow(img)
+        plt.show()
 
     def click(self):
 
@@ -34,7 +35,10 @@ class MainWindow(QMainWindow, QFrame):
 
     def onActivated(self, text):
         self.activeText = text
-        if (self.df[text].dtype == "float64") | (self.df[text].dtype == "int64"):
+        if self.activeText == "Select":
+            pass
+
+        elif (self.df[text].dtype == "float64") | (self.df[text].dtype == "int64"):
 
             self.type.setText("TYPE : " + str(self.df[text].dtype))
             self.count.setText("COUNT : " + str(self.df.count()[text]))
@@ -59,15 +63,13 @@ class MainWindow(QMainWindow, QFrame):
     def generateImage(self, type, text):
 
         if type == 0:
-            img = sns.kdeplot(self.df[str(text)], shade=True)
-            fig = img.get_figure()
-            fig.savefig(f'image/{text}.png')
-            fig.clf()
+            sns.kdeplot(self.df[str(text)], shade=True)
+            plt.savefig(f'image/{text}.png', bbox_inches="tight")
+            plt.clf()
         else:
-            img = sns.barplot(x=text, y=self.df[text].index, data=self.df)
-            fig = img.get_figure()
-            fig.savefig(f'image/{text}.png')
-            fig.clf()
+            sns.barplot(x=self.df[text].index, y=text, data=self.df)
+            plt.savefig(f'image/{text}.png', bbox_inches="tight")
+            plt.clf()
         self.image.setStyleSheet(f"border-image : url(image/{text}.png) 0 0 0 0 stretch stretch")
 
 
