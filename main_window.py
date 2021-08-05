@@ -15,6 +15,9 @@ class MainWindow(QMainWindow, QFrame):
         self.loadFileButton.clicked.connect(self.click)
         self.zoomButton.clicked.connect(self.zoomclick)
 
+        self.image.setStyleSheet(f"border-image : url(image/homeimage.jpg) 0 0 0 0 stretch stretch")
+        self.setWindowTitle("DATA VISUALIZATION")
+
         self.show()
 
     def zoomclick(self):
@@ -25,13 +28,18 @@ class MainWindow(QMainWindow, QFrame):
     def click(self):
 
         filename = QFileDialog.getOpenFileName()
+        print(filename)
         self.path = filename[0]
-        self.df = pd.read_csv(self.path)
-        self.column_item.clear()
-        self.column_item.addItem("Select")
-        for i in self.df.columns:
-            self.column_item.addItem(i)
-        self.column_item.activated[str].connect(self.onActivated)
+        if self.path == "":
+            pass
+        else:
+            self.fileName.setText((self.path.split("/")[-1]).upper())
+            self.df = pd.read_csv(self.path)
+            self.column_item.clear()
+            self.column_item.addItem("Select")
+            for i in self.df.columns:
+                self.column_item.addItem(i)
+            self.column_item.activated[str].connect(self.onActivated)
 
     def onActivated(self, text):
         self.activeText = text
