@@ -424,7 +424,7 @@ border-radius: 8px;
        <normaloff>../image/search.png</normaloff>../image/search.png</iconset>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_6">
+    <widget class="QPushButton" name="plotsButton">
      <property name="geometry">
       <rect>
        <x>20</x>

@@ -14,11 +14,16 @@ class MainWindow(QMainWindow, QFrame):
 
         self.loadFileButton.clicked.connect(self.click)
         self.zoomButton.clicked.connect(self.zoomclick)
+        self.plotsButton.clicked.connect(self.plotsClicked)
 
-        self.image.setStyleSheet(f"border-image : url(image/homeimage.jpg) 0 0 0 0 stretch stretch")
+        self.image.setStyleSheet(f"border-image : url(image/homeimage.jpg)")
         self.setWindowTitle("DATA VISUALIZATION")
 
         self.show()
+
+    def plotsClicked(self):
+        import plots
+        plots.MainWindow()
 
     def zoomclick(self):
         img = cv2.imread(f"image/{self.activeText}.png")
